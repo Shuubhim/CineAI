@@ -69,34 +69,44 @@ if uploaded_video and uploaded_script and not st.session_state.processing_comple
     st.divider()
     st.subheader("3. AI Processing")
 
+    # Input validation for script file
+    script_text = uploaded_script.read().decode("utf-8")
+    if not script_text.strip():
+        st.warning("⚠️ The uploaded script file is empty. Please upload a valid script file.")
+        st.stop()
+    
+    # Parse script and validate dialogue lines
+    st.session_state.script_cues = parse_structured_script(script_text)
+    perfect_sentences = [cue['content'] for cue in st.session_state.script_cues if cue['type'] == 'dialogue']
+    
+    if not perfect_sentences:
+        st.warning("⚠️ No dialogue lines found in the script. Please ensure your script contains 'dialogue:' sections.")
+        st.stop()
+    
+    st.success(f"✅ Perfect script parsed! Found {len(perfect_sentences)} dialogue lines.")
+
     with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as tfile:
         tfile.write(uploaded_video.read())
         st.session_state.video_path = tfile.name
 
-    # --- NEW: PROXY FILE GENERATION ---
+    # --- PROXY FILE GENERATION FOR PERFORMANCE ---
     with st.spinner("Creating a low-resolution proxy for faster analysis..."):
         try:
             clip = VideoFileClip(st.session_state.video_path)
-            # Create a proxy with a width of 480 pixels
+            # Create a proxy with a width of 480 pixels for faster processing
             proxy = clip.resize(width=480)
             proxy_path = "temp_proxy_video.mp4"
             proxy.write_videofile(proxy_path, codec="libx264", audio_codec="aac", logger=None)
             st.session_state.proxy_path = proxy_path
             clip.close()
             proxy.close()
-            st.success("✅ Proxy file created.")
+            st.success("✅ Proxy file created for faster processing.")
         except Exception as e:
             st.error(f"Failed to create proxy file: {e}")
             st.stop()
-    # --- END NEW SECTION ---
-
-    script_text = uploaded_script.read().decode("utf-8")
-    st.session_state.script_cues = parse_structured_script(script_text)
-    perfect_sentences = [cue['content'] for cue in st.session_state.script_cues if cue['type'] == 'dialogue']
-    st.success(f"✅ Perfect script parsed! Found {len(perfect_sentences)} dialogue lines.")
 
     with st.spinner(f"Extracting audio and transcribing with '{whisper_model}' model (this can take time)..."):
-        # UPDATED: Use the proxy file for faster audio extraction
+        # Use the proxy file for faster audio extraction and transcription
         video_clip = VideoFileClip(st.session_state.proxy_path)
         audio_path = "temp_audio.mp3"
         video_clip.audio.write_audiofile(audio_path, logger=None)
@@ -155,7 +165,7 @@ if st.session_state.processing_complete:
                 st.video(output_video_path)
                 # Clean up ALL temporary files
                 os.remove(st.session_state.video_path)
-                os.remove(st.session_state.proxy_path) # NEW: Clean up proxy file
+                os.remove(st.session_state.proxy_path) # Clean up proxy file
                 for p in b_roll_temp_paths.values(): os.remove(p)
                 if logo_path: os.remove(logo_path)
                 

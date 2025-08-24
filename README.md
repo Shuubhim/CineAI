@@ -1,44 +1,35 @@
-# 🎬 CineAI - Transcription-Based Video Editor
+# 🎬 CineAI – Transcription-Based Video Editor
 
-CineAI is an intelligent video editing application that uses AI-powered transcription and alignment to automatically create polished videos from raw footage. By comparing a perfect script against a messy transcript, CineAI identifies the best takes and assembles them into a professional final video with automatic subtitles, overlays, and B-roll integration.
+CineAI is an intelligent video editing application that uses AI-powered transcription and script alignment to automatically create professional videos from raw footage. By comparing a perfect script to a messy transcript, CineAI identifies the best takes and assembles them into a polished final video.
 
 ## ✨ Features
 
-- **🎤 Local Audio Transcription**: Uses OpenAI Whisper models (base/small/medium) for accurate speech-to-text conversion with word-level timestamps
-- **🤖 AI-Powered Alignment**: Intelligent matching of perfect script sentences to messy transcript segments to find the best takes
-- **📝 Automatic Subtitles**: Generates and overlays subtitles on the final video
-- **🎬 B-Roll Integration**: Automatically inserts B-roll footage based on keyword matching with dialogue
-- **📋 Script Overlays**: Adds text overlays from structured script cues
-- **🏷️ Logo Branding**: Optional logo overlay in the top-right corner
-- **⚡ Multiple Whisper Models**: Choose between base (fastest), small (balanced), or medium (most accurate) models
-- **🛡️ Robust Error Handling**: Graceful degradation when individual components fail
-- **🎨 Professional Output**: H.264 video with AAC audio, optimized for quality and compatibility
+- **AI-Powered Transcription**: Uses OpenAI Whisper for accurate speech-to-text conversion
+- **Smart Script Alignment**: Automatically matches perfect script lines to the best takes in raw footage
+- **Proxy Workflow**: Creates low-resolution proxies for faster processing while maintaining original quality
+- **B-Roll Integration**: Automatically inserts relevant B-roll footage based on keyword matching
+- **Professional Overlays**: Adds subtitles, script overlays, and logo branding
+- **Multiple Whisper Models**: Choose from base, small, or medium models for speed vs. accuracy trade-offs
+- **Robust Error Handling**: Continues processing even if individual clips fail
+- **Cloud-Ready**: CPU-compatible dependencies for easy deployment
 
 ## 🚀 Installation
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/cineai.git
-   cd cineai
+   git clone <repository-url>
+   cd project
    ```
 
-2. **Create a virtual environment**:
+2. **Install Python dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up a virtual environment** (recommended):
    ```bash
    python -m venv venv
-   ```
-
-3. **Activate the virtual environment**:
-   - **Windows**:
-     ```bash
-     venv\Scripts\activate
-     ```
-   - **macOS/Linux**:
-     ```bash
-     source venv/bin/activate
-     ```
-
-4. **Install dependencies**:
-   ```bash
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
    ```
 
@@ -48,16 +39,17 @@ CineAI is an intelligent video editing application that uses AI-powered transcri
 
 CineAI requires FFmpeg for video processing. Install it based on your operating system:
 
-**Windows:**
-- Download from [FFmpeg official website](https://ffmpeg.org/download.html)
-- Add FFmpeg to your system PATH
+**Windows**:
+1. Download from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
+2. Extract to a folder (e.g., `C:\ffmpeg`)
+3. Add `C:\ffmpeg\bin` to your system PATH
 
-**macOS:**
+**macOS**:
 ```bash
 brew install ffmpeg
 ```
 
-**Ubuntu/Debian:**
+**Linux (Ubuntu/Debian)**:
 ```bash
 sudo apt update
 sudo apt install ffmpeg
@@ -65,18 +57,18 @@ sudo apt install ffmpeg
 
 ### ImageMagick Installation
 
-ImageMagick is required for text overlay rendering:
+ImageMagick is required for text overlays and logo rendering:
 
-**Windows:**
-- Download from [ImageMagick official website](https://imagemagick.org/script/download.php#windows)
-- Ensure "Install legacy utilities" is checked during installation
+**Windows**:
+1. Download from [https://imagemagick.org/script/download.php](https://imagemagick.org/script/download.php)
+2. Install and ensure "Add to system PATH" is checked
 
-**macOS:**
+**macOS**:
 ```bash
 brew install imagemagick
 ```
 
-**Ubuntu/Debian:**
+**Linux (Ubuntu/Debian)**:
 ```bash
 sudo apt update
 sudo apt install imagemagick
@@ -87,7 +79,7 @@ sudo apt install imagemagick
 ### API Key Setup
 
 1. **Get an OpenRouter API Key**:
-   - Visit [OpenRouter](https://openrouter.ai/)
+   - Visit [https://openrouter.ai/](https://openrouter.ai/)
    - Create an account and generate an API key
 
 2. **Create Streamlit secrets file**:
@@ -97,112 +89,104 @@ sudo apt install imagemagick
 
 3. **Create `.streamlit/secrets.toml`**:
    ```toml
-   OPENROUTER_API_KEY = "your_openrouter_api_key_here"
+   OPENROUTER_API_KEY = "your-api-key-here"
    ```
 
-   **⚠️ Important**: Never commit this file to version control. It's already included in `.gitignore`.
+## 📖 Usage
 
-## 🎯 Usage
+### 1. Prepare Your Assets
 
-1. **Launch the application**:
-   ```bash
-   streamlit run app.py
-   ```
+- **Raw Video**: Upload your unedited video file (MP4, MOV)
+- **Perfect Script**: Create a text file with structured dialogue sections:
+  ```
+  dialogue: Hello, welcome to our tutorial.
+  b-roll: [showing computer screen]
+  dialogue: Today we'll learn about video editing.
+  overlay: [Key Point: Video Editing Basics]
+  ```
+- **B-Roll Clips** (optional): Upload additional video clips
+- **Logo** (optional): Upload a PNG logo for branding
 
-2. **Upload your assets**:
-   - **Raw Video**: Upload your video with mistakes/retakes
-   - **Perfect Script**: Upload a text file with structured dialogue
-   - **B-Roll Clips** (optional): Upload additional footage
-   - **Logo** (optional): Upload a PNG logo image
+### 2. Configure Settings
 
-3. **Configure settings** in the sidebar:
-   - Choose Whisper model size
-   - Enable/disable features (subtitles, overlays, B-roll, logo)
-   - Map B-roll keywords
+In the sidebar, you can:
+- **Select Whisper Model**: Choose between 'base', 'small', or 'medium'
+- **Enable Features**: Toggle subtitles, overlays, B-roll, and logo
+- **Map B-Roll Keywords**: Associate B-roll clips with specific keywords
 
-4. **Process and assemble**:
-   - The app will transcribe your video
-   - AI will align the script with the transcript
-   - Click "Assemble Final Video" to generate the output
+### 3. Process and Assemble
 
-## 📋 Script Format
+1. Upload your assets
+2. The app will create a proxy file for faster processing
+3. AI will transcribe the audio and align it with your script
+4. Review the AI-generated cut list
+5. Click "Assemble Final Video" to render the final high-quality output
 
-Your script file should follow this structured format:
+### 4. Workflow Details
 
-```
-dialogue: Hello, welcome to our tutorial.
-b-roll: [showing computer screen]
-overlay: Tutorial Introduction
+- **Proxy Generation**: Creates a 480px wide proxy for faster analysis
+- **Transcription**: Uses the selected Whisper model for speech recognition
+- **AI Alignment**: Matches perfect script lines to the best takes
+- **Final Assembly**: Uses original high-quality video with proxy-generated timestamps
+- **Cleanup**: Automatically removes temporary files after processing
 
-dialogue: Today we'll learn about video editing.
-b-roll: [showing editing software]
-overlay: Main Topic
-```
+## 🔍 Troubleshooting
 
-- **`dialogue:`** - The perfect script text to match against
-- **`b-roll:`** - Description of B-roll footage (for keyword matching)
-- **`overlay:`** - Text to display as overlay on the video
+### Common Issues
 
-## 🏗️ Project Structure
+**"FFmpeg not found" Error**:
+- Ensure FFmpeg is installed and added to your system PATH
+- Restart your terminal/IDE after installation
 
-```
-cineai/
-├── app.py              # Main Streamlit application
-├── utils.py            # Core processing functions
-├── requirements.txt    # Python dependencies
-├── .gitignore         # Git ignore rules
-├── README.md          # This file
-└── assets/            # Font files and other assets
-```
+**"ImageMagick not found" Error**:
+- Install ImageMagick and ensure it's in your system PATH
+- On Windows, check that the installation added it to PATH
 
-## 🔍 Technical Details
+**"OpenAI API Error"**:
+- Verify your OpenRouter API key is correct in `.streamlit/secrets.toml`
+- Check your API key balance on OpenRouter
 
-- **Transcription**: OpenAI Whisper with word-level timestamps
-- **AI Alignment**: OpenRouter API with GPT-OSS-20B model
-- **Video Processing**: MoviePy with H.264/AAC encoding
-- **Text Rendering**: ImageMagick integration
-- **Web Interface**: Streamlit
+**"No dialogue lines found" Warning**:
+- Ensure your script file contains sections marked with `dialogue:`
+- Check that the script file is not empty
 
-## 🤝 Contributing
+**"Failed to create proxy file" Error**:
+- Verify your video file is not corrupted
+- Ensure sufficient disk space for temporary files
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+**"B-Roll processing failed" Warning**:
+- Check that B-roll video files are not corrupted
+- Verify file formats are supported (MP4, MOV)
+
+### Performance Tips
+
+- Use the 'base' Whisper model for faster processing
+- Keep video files under 1GB for optimal performance
+- Ensure adequate RAM (8GB+ recommended)
+- Use SSD storage for faster file operations
+
+### Memory Management
+
+- The app automatically cleans up temporary files
+- Large videos may require more memory during processing
+- Consider processing videos in smaller segments if memory is limited
+
+## 🛠️ Technical Details
+
+- **Framework**: Streamlit for web interface
+- **AI Models**: OpenAI Whisper for transcription, GPT-OSS-20B for alignment
+- **Video Processing**: MoviePy with FFmpeg backend
+- **Text Rendering**: ImageMagick for overlays and subtitles
+- **Deployment**: CPU-compatible PyTorch versions for cloud deployment
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆘 Troubleshooting
+## 🤝 Contributing
 
-**Transcription fails:**
-- Ensure FFmpeg is installed and in your PATH
-- Check that PyTorch is properly installed
-- Verify audio file format is supported
-
-**Text overlays not rendering:**
-- Ensure ImageMagick is installed
-- Check that legacy utilities are enabled (Windows)
-
-**AI alignment fails:**
-- Verify your OpenRouter API key is correct
-- Check internet connection
-- Ensure script format is correct
-
-**Video assembly fails:**
-- Check available disk space
-- Ensure video files are not corrupted
-- Verify all dependencies are installed
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please:
-1. Check the troubleshooting section above
-2. Search existing issues in the repository
-3. Create a new issue with detailed information about your problem
-
----
-
-**Made with ❤️ for content creators who want to focus on creativity, not editing.**
+For support and questions, please open an issue on the project repository.

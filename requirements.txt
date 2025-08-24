@@ -1,14 +1,15 @@
 # CineAI - Transcription-Based Video Editor
-# Core dependencies with exact pinned versions
+# Core dependencies with exact pinned versions for production deployment
 
 # Web framework
 streamlit==1.48.1
 
-# AI and machine learning
+# AI and machine learning (CPU-compatible versions for cloud deployment)
 openai==1.101.0
 openai-whisper==20250625
-torch==2.8.0+cu129
-torchvision==0.23.0+cu129
+torch==2.8.0+cpu
+torchvision==0.23.0+cpu
+torchaudio==2.8.0+cpu
 
 # Video processing
 moviepy==1.0.3
