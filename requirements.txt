@@ -1,0 +1,92 @@
+# CineAI - Transcription-Based Video Editor
+# Core dependencies with exact pinned versions
+
+# Web framework
+streamlit==1.48.1
+
+# AI and machine learning
+openai==1.101.0
+openai-whisper==20250625
+torch==2.8.0+cu129
+torchvision==0.23.0+cu129
+
+# Video processing
+moviepy==1.0.3
+opencv-python==4.12.0.88
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+proglog==0.1.12
+
+# Image processing
+pillow==11.3.0
+
+# HTTP requests
+requests==2.32.5
+httpx==0.28.1
+httpcore==1.0.9
+
+# Natural language processing
+nltk==3.9.1
+regex==2025.7.34
+
+# Data processing and utilities
+numpy==2.2.6
+pandas==2.3.2
+tqdm==4.67.1
+
+# Google API dependencies (for potential future features)
+google-api-python-client==2.179.0
+google-auth==2.40.3
+google-auth-httplib2==0.2.0
+
+# Development and utility packages
+python-dotenv==1.1.1
+tiktoken==0.11.0
+tenacity==9.1.2
+watchdog==6.0.0
+
+# Additional dependencies for video processing
+numba==0.61.2
+llvmlite==0.44.0
+decorator==4.4.2
+
+# File handling and system utilities
+fsspec==2024.6.1
+filelock==3.13.1
+colorama==0.4.6
+
+# JSON and data validation
+jsonschema==4.25.1
+jsonschema-specifications==2025.4.1
+referencing==0.36.2
+
+# Network and async utilities
+anyio==4.10.0
+sniffio==1.3.1
+h11==0.16.0
+
+# Date and time utilities
+python-dateutil==2.9.0.post0
+pytz==2025.2
+tzdata==2025.2
+
+# Security and authentication
+certifi==2025.8.3
+charset-normalizer==3.4.3
+idna==3.10
+pyasn1==0.6.1
+pyasn1_modules==0.4.2
+rsa==4.9.1
+
+# Template and markup processing
+jinja2==3.1.6
+markupsafe==3.0.2
+
+# Additional utilities
+click==8.2.1
+packaging==25.0
+pyparsing==3.2.3
+six==1.17.0
+toml==0.10.2
+typing-extensions==4.14.1
+uritemplate==4.2.0
